@@ -1,6 +1,9 @@
 import re
 from splinter import Browser
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 import time
 import random
 
@@ -28,10 +31,11 @@ receipt_time = input()
 #change this if others are using the program
 
 
-
 #go to webpage
 browser = Browser('chrome')
 browser.visit('http://tellaldi.us')
+driver = browser.driver
+
 
 #select language prompt
 browser.find_by_id('option_934913_404244').first.click() #english
@@ -57,32 +61,40 @@ element_times = browser.find_by_id('prompt_content_386008').first #select dropdo
 option = 856927+(int(receipt_time))
 element_times.select(str(option))
 
-time.sleep(0.5)
+
 
 #next page
 browser.find_by_id('nextPageLink').first.click() #next
 
+#WebDriverWait(driver, 10).until(EC.element_to_be_clickable( (By.css, 'label[class="ui-checkbox"]')))
 
-#what areas did you visit
-#first box is id promptInput_386009, last is promptInput_386020
-#386015 is missing for some reason
+#what areas did you visit in the store
 r = random.SystemRandom()
-element_areas = ["promptInput_386009", "promptInput_386010", "promptInput_386011", "promptInput_386012", "promptInput_386013", "promptInput_386014", "promptInput_386016", "promptInput_386017", "promptInput_386018", "promptInput_386019", "promptInput_386020"]
-loops = r.randint(1, 11) # randomly choose the number of checkboxes that will be selected
-counter = 0
+checkboxes = WebDriverWait(driver, 10).until(EC.element_to_be_clickable( (By.CSS_SELECTOR, 'label[class="ui-checkbox"]')))
+#checkboxes = browser.find_by_css('label[class="ui-checkbox"]')
+number_of_loops = r.randint(1,11) # randomly choose the number of checkboxes that will be selected
+counter = 1
+
+NUM_CHECKBOXES = 11
+NUM_CHECKBOXES_TO_SELECT = 3
+
+print("Number of checkboxes found:")
+print(len(browser.find_by_css('label[class="ui-checkbox"]')))
 
 #select the chosen number of boxes, in a random order
-while counter <= loops:
-    element_checkbox = element_areas[r.randint(0, (len(element_areas)-1))]
-    browser.find_by_id(element_checkbox).check()
-    element_areas.remove(element_checkbox)
+while counter <= NUM_CHECKBOXES_TO_SELECT:
+    checkbox_index = r.randint(0, (len(checkboxes)-1))
+    print("clicking checkbox index:", checkbox_index)
+    browser.find_by_css('label[class="ui-checkbox"]')[r.randint(0, (len(checkboxes)-1))].check()
     counter+=1
+    time.sleep(1) 
 
 browser.find_by_id('nextPageLink').first.click() #next
 
 #rate satisfaction with location
-element_rate = browser.find_by_id("prompt_484675")
-element_rate.select("1114559")
+element_rate = browser.find_by_css('div[class=option last]').first().click()
+#element_rate = browser.find_by_id("prompt_484675")
+#element_rate.select("1114559")
 
 #rate recommending to a friend
 element_rate = browser.find_by_id("prompt_484676")
