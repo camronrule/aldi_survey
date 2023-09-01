@@ -70,8 +70,8 @@ browser.find_by_id('nextPageLink').first.click() #next
 
 #what areas did you visit in the store
 r = random.SystemRandom()
-checkboxes = WebDriverWait(driver, 10).until(EC.element_to_be_clickable( (By.CSS_SELECTOR, 'label[class="ui-checkbox"]')))
-#checkboxes = browser.find_by_css('label[class="ui-checkbox"]')
+WebDriverWait(driver, 10).until(EC.element_to_be_clickable( (By.CSS_SELECTOR, 'label.ui-checkbox')))
+checkboxes = browser.find_by_css('label.ui-checkbox')
 number_of_loops = r.randint(1,11) # randomly choose the number of checkboxes that will be selected
 counter = 1
 
@@ -79,26 +79,31 @@ NUM_CHECKBOXES = 11
 NUM_CHECKBOXES_TO_SELECT = 3
 
 print("Number of checkboxes found:")
-print(len(browser.find_by_css('label[class="ui-checkbox"]')))
+print(len(browser.find_by_css('label.ui-checkbox')))
 
 #select the chosen number of boxes, in a random order
 while counter <= NUM_CHECKBOXES_TO_SELECT:
     checkbox_index = r.randint(0, (len(checkboxes)-1))
     print("clicking checkbox index:", checkbox_index)
-    browser.find_by_css('label[class="ui-checkbox"]')[r.randint(0, (len(checkboxes)-1))].check()
+    browser.find_by_css('label.ui-checkbox')[r.randint(0, (len(checkboxes)-1))].check()
     counter+=1
     time.sleep(1) 
 
-browser.find_by_id('nextPageLink').first.click() #next
+element_rate = browser.find_by_id('nextPageLink').first.click() #next
 
 #rate satisfaction with location
-element_rate = browser.find_by_css('div[class=option last]').first().click()
+browser.find_by_css('div.last')[1].click()
 #element_rate = browser.find_by_id("prompt_484675")
 #element_rate.select("1114559")
 
+time.sleep(5)
+
 #rate recommending to a friend
-element_rate = browser.find_by_id("prompt_484676")
-element_rate.select("1114564")
+browser.find_by_css('div.last')[2].click()
+#element_rate.select("1114564")
+
+time.sleep(5)
+
 
 browser.find_by_id('nextPageLink').first.click() #next
 #skip page describing experience
