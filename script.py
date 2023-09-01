@@ -1,4 +1,3 @@
-import re
 from splinter import Browser
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -6,7 +5,21 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import time
 import random
+import pickle
+import os.path
 
+if not os.path.isfile('data.txt'): #if user data has not been saved before
+    user_info = []
+    print("Please enter the following information, pressing enter after each item:")
+    print("First name:\nLast name:\nStreet address:\nCity\nZip code\nPhone number (no spaces, parentheses, or hyphens)\nEmail")
+    
+    for i in range(7):
+        user_info += input()
+
+    #create file and pickle
+    with open('data.pkl', 'wb') as f:
+        pickle.dump(user_info, f)
+        f.close()
 
 #take in the survey code
 print('Please enter the code located on the bottom of the receipt')
@@ -196,26 +209,30 @@ time.sleep(1.5)
 element_mult = browser.find_by_id("prompt_403404")
 element_mult.select("932876")
 
+#retrieve user info in case it was already stored
+with open('data.pkl', 'rb') as f:
+    user_info = pickle.load(f)
+
 #fill in name, address
-browser.find_by_id('prompt_386083').fill("Camron") #first name
+browser.find_by_id('prompt_386083').fill(user_info[0]) #first name
 browser.type(Keys.TAB)
-browser.type("Rule") #last name
+browser.type(user_info([1])) #last name
 browser.type(Keys.TAB)
-browser.type("8629 Millstream Drive") #address
+browser.type(user_info([2])) #address
 browser.type(Keys.TAB)
-browser.type("Glen Allen") #city
+browser.type(user_info[3]) #city
 
 browser.find_by_id("prompt_386750") #select state dropdown
 browser.type("v")
 browser.type(Keys.TAB)
 
-browser.find_by_id("prompt_386088").fill("23228") #select zip code box
+browser.find_by_id("prompt_386088").fill(user_info[4]) #select zip code box
 browser.type(Keys.TAB)
 
-browser.type("8049379066")
+browser.type(user_info[5])
 browser.type(Keys.TAB)
 
-browser.type("camronrule@gmail.com")
+browser.type(user_info[6])
 browser.type(Keys.TAB) #move to ask about subscribing to email list
 browser.type(Keys.ENTER) #submit page
 
