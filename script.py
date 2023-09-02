@@ -8,11 +8,25 @@ import random
 import pickle
 import os.path
 
+if not os.path.isfile('data.txt'): #if user data has not been saved before
+    user_info = []
+    print("Please enter the following information, pressing enter after each item:")
+    print("First name:\nLast name:\nStreet address:\nCity\nZip code\nPhone number (no spaces, parentheses, or hyphens)\nEmail")
+    import pickle
+import os.path
+
 if not os.path.isfile('data.pkl'): #if user data has not been saved before
     user_info = [None] * 7
     print("Please enter the following information, pressing enter after each item:")
     print("First name:\nLast name:\nStreet address:\nCity\nZip code\nPhone number (no spaces, parentheses, or hyphens)\nEmail")
     
+    for i in range(7):
+        user_info += input()
+
+    #create file and pickle
+    with open('data.pkl', 'wb') as f:
+        pickle.dump(user_info, f)
+        f.close()
     for i in range(7):
         user_info[i] = input()
 
@@ -217,36 +231,29 @@ with open('data.pkl', 'rb') as f:
 
     key = Keys()
 
-    #fill in name, address
-    print(len(browser.find_by_css('input.ng-empty')))
-    browser.find_by_css('input.ng-empty')[0].fill(user_info[0]) #first name
-    browser.type('promptField', key.TAB)
-    time.sleep(.5)
-    browser.type(user_info([1])) #last name
-    browser.type('promptField', key.TAB)
-    time.sleep(.5)
-    browser.type(user_info([2])) #address
-    browser.type('promptField', key.TAB)
-    time.sleep(.5)
-    browser.type(user_info[3]) #city
+#fill in name, address
+browser.find_by_id('prompt_386083').fill("Camron") #first name
+browser.type(Keys.TAB)
+browser.type("Rule") #last name
+browser.type(Keys.TAB)
+browser.type("8629 Millstream Drive") #address
+browser.type(Keys.TAB)
+browser.type("Glen Allen") #city
 
     browser.find_by_id("prompt_386750") #select state dropdown
     browser.type("v")
     browser.type('promptField', key.TAB)
     time.sleep(.5)
 
-    browser.find_by_id("prompt_386088").fill(user_info[4]) #select zip code box
-    browser.type('promptField', key.TAB)
-    time.sleep(.5)
+browser.find_by_id("prompt_386088").fill("23228") #select zip code box
+browser.type(Keys.TAB)
 
-    browser.type(user_info[5])
-    browser.type('promptField', key.TAB)
-    time.sleep(.5)
+browser.type("8049379066")
+browser.type(Keys.TAB)
 
-    browser.type(user_info[6])
-    browser.type('promptField', key.TAB) #move to ask about subscribing to email list
-    time.sleep(.5)
-    browser.type('promptField', key.ENTER) #submit page
+browser.type("camronrule@gmail.com")
+browser.type(Keys.TAB) #move to ask about subscribing to email list
+browser.type(Keys.ENTER) #submit page
 
 #do you agree to privacy policy
 element_mult = browser.find_by_id("494324")
