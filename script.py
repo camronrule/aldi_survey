@@ -224,32 +224,44 @@ with open('data.pkl', 'rb') as f:
     user_info = pickle.load(f)
 
     #fill in name, address
-    browser.find_by_id('prompt_386083').fill(user_info[0]) #first name
-    browser.type(Keys.TAB)
-    browser.type(user_info[1]) #last name
-    browser.type(Keys.TAB)
-    browser.type(user_info[2]) #address
-    browser.type(Keys.TAB)
-    browser.type(user_info[3]) #city
-
-    browser.find_by_id("prompt_386750") #select state dropdown
-    browser.type("v")
-    browser.type('promptField', Keys.TAB)
+    browser.find_by_id('promptInput_386083').fill(user_info[0]) #first name
+    browser.find_by_id('promptInput_386083').type(Keys.TAB)
     time.sleep(.5)
 
-    browser.find_by_id("prompt_386088").fill(user_info[4]) #select zip code box
-    browser.type(Keys.TAB)
+    browser.find_by_id('promptInput_386084').type(user_info[1]) #last name
+    browser.find_by_id('promptInput_386084').type(Keys.TAB)
+    time.sleep(.5)
 
-    browser.type(user_info[5])
-    browser.type(Keys.TAB)
+    browser.find_by_id('promptInput_386085').type(user_info[2]) #address
+    browser.find_by_id('promptInput_386085').type(Keys.TAB)
+    time.sleep(.5)
 
-    browser.type(user_info[6])
-    browser.type(Keys.TAB) #move to ask about subscribing to email list
-    browser.type(Keys.ENTER) #submit page
+    browser.find_by_id('promptInput_386086').type(user_info[3]) #city
+    browser.find_by_id('promptInput_386086').type(Keys.TAB)
+    time.sleep(.5)
+
+    browser.find_by_css("div.ui-select.btn").click() #select state dropdown
+    browser.find_by_css("div.ui-select.btn").type("v")
+    browser.find_by_css("div.ui-select.btn").type(Keys.TAB)
+    time.sleep(.5)
+
+    browser.find_by_id("promptInput_386088").fill(user_info[4]) #select zip code box
+    browser.find_by_id("promptInput_386088").type(Keys.TAB)
+
+    browser.find_by_id('promptInput_386089').type(user_info[5]) #phone nunmber
+    browser.find_by_id('promptInput_386089').type(Keys.TAB)
+
+    browser.find_by_id('promptInput_386090').type(user_info[6]) #email
+    browser.find_by_id('promptInput_386090').type(Keys.TAB) 
+
+    browser.find_by_css('div.booleanText').click() #agree to emailing list
+    browser.find_by_id('nextPageLink').first.click() #next
+
+################################
 
 #do you agree to privacy policy
-element_mult = browser.find_by_id("494324")
-element_mult.select("1135070")
+#element_mult = browser.find_by_id("494324")
+#element_mult.select("1135070")
 
 browser.find_by_id('nextPageLink').first.click() #next
 
