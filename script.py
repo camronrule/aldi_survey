@@ -8,13 +8,13 @@ import random
 import pickle
 import os.path
 
-if not os.path.isfile('data.txt'): #if user data has not been saved before
-    user_info = []
+if not os.path.isfile('data.pkl'): #if user data has not been saved before
+    user_info = [None] * 7
     print("Please enter the following information, pressing enter after each item:")
     print("First name:\nLast name:\nStreet address:\nCity\nZip code\nPhone number (no spaces, parentheses, or hyphens)\nEmail")
     
     for i in range(7):
-        user_info += input()
+        user_info[i] = input()
 
     #create file and pickle
     with open('data.pkl', 'wb') as f:
@@ -94,13 +94,9 @@ counter = 1
 NUM_CHECKBOXES = 11
 NUM_CHECKBOXES_TO_SELECT = 3
 
-print("Number of checkboxes found:")
-print(len(browser.find_by_css('label.ui-checkbox')))
-
 #select the chosen number of boxes, in a random order
 while counter <= NUM_CHECKBOXES_TO_SELECT:
     checkbox_index = r.randint(0, (len(checkboxes)-1))
-    print("clicking checkbox index:", checkbox_index)
     browser.find_by_css('label.ui-checkbox')[r.randint(0, (len(checkboxes)-1))].check()
     counter+=1
 
@@ -199,42 +195,58 @@ browser.find_by_text("One or more times per week").click()
 browser.find_by_text("No").click()
 
 #household income (25-50k)
-browser.find_by_text("49").click()
+browser.find_by_css('div.menuItem').last.click()
+#browser.find_by_text("$")[2].click()
 browser.find_by_id('nextPageLink').first.click() #next
 
 ####################################
 time.sleep(1.5)
 
 #would you like to enter for gift card
-element_mult = browser.find_by_id("prompt_403404")
-element_mult.select("932876")
+browser.find_by_text("Yes").click()
+browser.find_by_id('nextPageLink').first.click() #next
+
+###################################
+time.sleep(1.5)
+browser.find_by_text("Yes").click()
+time.sleep(5)
 
 #retrieve user info in case it was already stored
 with open('data.pkl', 'rb') as f:
     user_info = pickle.load(f)
 
-#fill in name, address
-browser.find_by_id('prompt_386083').fill(user_info[0]) #first name
-browser.type(Keys.TAB)
-browser.type(user_info([1])) #last name
-browser.type(Keys.TAB)
-browser.type(user_info([2])) #address
-browser.type(Keys.TAB)
-browser.type(user_info[3]) #city
+    key = Keys()
 
-browser.find_by_id("prompt_386750") #select state dropdown
-browser.type("v")
-browser.type(Keys.TAB)
+    #fill in name, address
+    print(len(browser.find_by_css('input.ng-empty')))
+    browser.find_by_css('input.ng-empty')[0].fill(user_info[0]) #first name
+    browser.type('promptField', key.TAB)
+    time.sleep(.5)
+    browser.type(user_info([1])) #last name
+    browser.type('promptField', key.TAB)
+    time.sleep(.5)
+    browser.type(user_info([2])) #address
+    browser.type('promptField', key.TAB)
+    time.sleep(.5)
+    browser.type(user_info[3]) #city
 
-browser.find_by_id("prompt_386088").fill(user_info[4]) #select zip code box
-browser.type(Keys.TAB)
+    browser.find_by_id("prompt_386750") #select state dropdown
+    browser.type("v")
+    browser.type('promptField', key.TAB)
+    time.sleep(.5)
 
-browser.type(user_info[5])
-browser.type(Keys.TAB)
+    browser.find_by_id("prompt_386088").fill(user_info[4]) #select zip code box
+    browser.type('promptField', key.TAB)
+    time.sleep(.5)
 
-browser.type(user_info[6])
-browser.type(Keys.TAB) #move to ask about subscribing to email list
-browser.type(Keys.ENTER) #submit page
+    browser.type(user_info[5])
+    browser.type('promptField', key.TAB)
+    time.sleep(.5)
+
+    browser.type(user_info[6])
+    browser.type('promptField', key.TAB) #move to ask about subscribing to email list
+    time.sleep(.5)
+    browser.type('promptField', key.ENTER) #submit page
 
 #do you agree to privacy policy
 element_mult = browser.find_by_id("494324")
