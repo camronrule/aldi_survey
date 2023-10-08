@@ -54,7 +54,6 @@ receipt_time = "0"
 #user info is stored already
 #change this if others are using the program
 
-
 #go to webpage
 browser = Browser('chrome')
 browser.visit('http://tellaldi.us')
@@ -222,7 +221,7 @@ browser.find_by_id('nextPageLink').first.click() #next
 ###################################
 time.sleep(1.5)
 browser.find_by_text("Yes").click()
-time.sleep(5)
+time.sleep(0.5)
 
 #retrieve user info in case it was already stored
 with open('data.pkl', 'rb') as f:
@@ -245,31 +244,38 @@ with open('data.pkl', 'rb') as f:
     browser.find_by_id('promptInput_386086').type(Keys.TAB)
     time.sleep(.5)
 
-    browser.find_by_css("div.ui-select.btn").click() #select state dropdown
-    browser.find_by_css("div.ui-select.btn").type("v")
-    browser.find_by_css("div.ui-select.btn").type(Keys.TAB)
+    pulldown = browser.find_by_css("select") #select state dropdown
+    pulldown.click()
+    time.sleep(0.25)
+    pulldown.type("v")
+    pulldown.type(Keys.TAB)
     time.sleep(.5)
 
     browser.find_by_id("promptInput_386088").fill(user_info[4]) #select zip code box
     browser.find_by_id("promptInput_386088").type(Keys.TAB)
+    time.sleep(.5)
 
     browser.find_by_id('promptInput_386089').type(user_info[5]) #phone nunmber
     browser.find_by_id('promptInput_386089').type(Keys.TAB)
+    time.sleep(.5)
 
     browser.find_by_id('promptInput_386090').type(user_info[6]) #email
     browser.find_by_id('promptInput_386090').type(Keys.TAB) 
+    time.sleep(.5)
 
     browser.find_by_css('div.booleanText').click() #agree to emailing list
     browser.find_by_id('nextPageLink').first.click() #next
+    time.sleep(.5)
 
 ################################
 
 #do you agree to privacy policy
-#element_mult = browser.find_by_id("494324")
-#element_mult.select("1135070")
-
+browser.find_by_text("Yes").click()
 browser.find_by_id('nextPageLink').first.click() #next
 
+if (browser.url is ('https://www.aldi.us')):
+    print('Success! Thank you for using this program')
+    print('  _________\n /         \\\n |  /\\ /\\  |\n |    -    |\n |  \\___/  |\n \\_________/');
 
 
-time.sleep(10)
+time.sleep(1)
