@@ -10,9 +10,10 @@ import os.path
 
 
 if not os.path.isfile('data.pkl'): #if user data has not been saved before
-    user_info = [None] * 7
+    user_info = [None] * 8
+    print("========================================")
     print("Please enter the following information, pressing enter after each item:")
-    print("First name:\nLast name:\nStreet address:\nCity\nZip code\nPhone number (no spaces, parentheses, or hyphens)\nEmail")
+    print("First name:\nLast name:\nStreet address:\nCity\nState\nZip code\nPhone number (no spaces, parentheses, or hyphens)\nEmail\n")
     
     for i in range(7):
         user_info[i] = input()
@@ -30,15 +31,16 @@ if not os.path.isfile('data.pkl'): #if user data has not been saved before
         f.close()
 
 #take in the survey code
+print("========================================")
 print('Please enter the code located on the bottom of the receipt')
 print('Enter the code separated by hyphens, with no other characters')
-print('e.g., 0123-456-789-012-345')
+print('e.g., 0123-456-789-012-345\n')
 #receipt_code = input().split('-')
 receipt_code = ["2685","480","002","005","016"]
 
 #take in survey date
 print('Please enter the date on the receipt in DD-MM-YYYY format, separated by hyphens')
-print('e.g., 06-20-2023')
+print('e.g., 06-20-2023\n')
 #receipt_date = input().split('-')
 receipt_date = ["10","07","23"]
 
@@ -63,7 +65,7 @@ driver = browser.driver
 #select language prompt
 browser.find_by_id('option_934913_404244').first.click() #english
 browser.find_by_id('nextPageLink').first.click() #next
-time.sleep(1.5)
+time.sleep(0.5)
 
 #select type of survey - receipt 1 (only numbers in survey code)
 browser.find_by_css('div.menuItem').first.click()
@@ -122,12 +124,12 @@ browser.find_by_css('div.last')[2].click()
 browser.find_by_id('nextPageLink').first.click() #next
 
 #################################
-time.sleep(1.5)
+time.sleep(.5)
 #skip page describing experience
 browser.find_by_id('nextPageLink').first.click() #next
 
 #################################
-time.sleep(1.5)
+time.sleep(.5)
 #rate cleanliness of store
 browser.find_by_css('div.last')[1].click()
 
@@ -139,7 +141,7 @@ browser.find_by_css('div.last')[3].click()
 browser.find_by_id('nextPageLink').first.click() #next
 
 #################################
-time.sleep(1.5)
+time.sleep(.5)
 #rate friendliness of staff
 browser.find_by_css("div.last")[1].click()
 
@@ -151,13 +153,13 @@ browser.find_by_text("Yes").click()
 browser.find_by_id('nextPageLink').first.click() #next
 
 #################################
-time.sleep(1.5)
+time.sleep(.5)
 #did the cashier handle product well
 browser.find_by_text("Yes").click()
 browser.find_by_id('nextPageLink').first.click() #next
 
 #################################
-time.sleep(1.5)
+time.sleep(.5)
 #time spent at checkout met my expectations
 browser.find_by_css('div.last').click()
 
@@ -166,7 +168,7 @@ browser.find_by_text("Yes").click()
 browser.find_by_id('nextPageLink').first.click() #next
 
 ##################################
-time.sleep(1.5)
+time.sleep(.5)
 #were cleaning wipes available
 browser.find_by_text("1").click()
 
@@ -175,13 +177,13 @@ browser.find_by_text("1").last.click()
 browser.find_by_id('nextPageLink').first.click() #next
 
 ###################################
-time.sleep(1.5)
+time.sleep(.5)
 #what is ur experience with aldi app
 browser.find_by_text("I know ALDI has a mobile app but I have never used it").click()
 browser.find_by_id('nextPageLink').first.click() #next
 
 ###################################
-time.sleep(1.5)
+time.sleep(.5)
 #what is ur experience with aldi grocery delivery
 browser.find_by_text("I know ALDI has grocery delivery but I have never tried it").click()
 
@@ -190,12 +192,12 @@ browser.find_by_text("I know ALDI has curbside pickup but I have never tried it"
 browser.find_by_id('nextPageLink').first.click() #next
 
 ###################################
-time.sleep(1.5)
+time.sleep(.5)
 #describe what products you want (optional)
 browser.find_by_id('nextPageLink').first.click() #next
 
 ####################################
-time.sleep(1.5)
+time.sleep(.5)
 #demographic page
 #age (18-24)
 browser.find_by_text("18 to 24").click()
@@ -212,14 +214,14 @@ browser.find_by_css('div.menuItem').last.click()
 browser.find_by_id('nextPageLink').first.click() #next
 
 ####################################
-time.sleep(1.5)
+time.sleep(.5)
 
 #would you like to enter for gift card
 browser.find_by_text("Yes").click()
 browser.find_by_id('nextPageLink').first.click() #next
 
 ###################################
-time.sleep(1.5)
+time.sleep(.5)
 browser.find_by_text("Yes").click()
 time.sleep(0.5)
 
@@ -247,19 +249,19 @@ with open('data.pkl', 'rb') as f:
     pulldown = browser.find_by_css("select") #select state dropdown
     pulldown.click()
     time.sleep(0.25)
-    pulldown.type("v")
+    pulldown.type(user_info[4][0]) #first letter of state
     pulldown.type(Keys.TAB)
     time.sleep(.5)
 
-    browser.find_by_id("promptInput_386088").fill(user_info[4]) #select zip code box
+    browser.find_by_id("promptInput_386088").fill(user_info[5]) #select zip code box
     browser.find_by_id("promptInput_386088").type(Keys.TAB)
     time.sleep(.5)
 
-    browser.find_by_id('promptInput_386089').type(user_info[5]) #phone nunmber
+    browser.find_by_id('promptInput_386089').type(user_info[6]) #phone nunmber
     browser.find_by_id('promptInput_386089').type(Keys.TAB)
     time.sleep(.5)
 
-    browser.find_by_id('promptInput_386090').type(user_info[6]) #email
+    browser.find_by_id('promptInput_386090').type(user_info[7]) #email
     browser.find_by_id('promptInput_386090').type(Keys.TAB) 
     time.sleep(.5)
 
@@ -273,9 +275,10 @@ with open('data.pkl', 'rb') as f:
 browser.find_by_text("Yes").click()
 browser.find_by_id('nextPageLink').first.click() #next
 
+#page changes to aldi.us if survey was submitted
 if (browser.url is ('https://www.aldi.us')):
     print('Success! Thank you for using this program')
-    print('  _________\n /         \\\n |  /\\ /\\  |\n |    -    |\n |  \\___/  |\n \\_________/');
+    print('  _________\n /         \\\n |  /\\ /\\  |\n |    -    |\n |  \\___/  |\n \\_________/'); #smiley face :)
 
 
 time.sleep(1)
