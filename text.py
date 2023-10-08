@@ -15,10 +15,12 @@ def main():
     img_name = input()
     heic_img = HEIC2PNG(img_name+".heic")
     heic_img.save()
+    print("Image has been converted to .png")
     #os.remove(img_name+".heic")
 
     #preprocess image to make recognition stronger
     #apply grayscale, gaussian blur, otsu's threshold
+    print("Processing image...")
     image = cv2.imread(img_name+".png")
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     blur = cv2.GaussianBlur(gray, (3,3), 0)
@@ -41,11 +43,11 @@ def main():
             text = (re.sub("[^0-9^/]", "", i)).strip() #remove anything that is not a digit or /
             while (not text[0].isnumeric()): #trim the front of the string until it starts with a number
                 text = text[1:]
-            print(text[0:20])
+            print("The survey code is: "+text[0:20])
             #first 20 char are survey code, separated with '/'
             break
 
-    os.remove(img_name+".png")
+    #os.remove(img_name+".png")
     
     return text[0:20] #send survey code back to script.py
 
