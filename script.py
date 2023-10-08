@@ -1,12 +1,24 @@
+'''
+This script automatically fills out the Aldi survey that is printed on
+their receipts. The most positive answers are chosen. The survey asks for user info for
+a chance to win a gift card. This information is taken at the beginning of the program and
+stored in a pickle, if the user has not inputted it before. Options which are not subjective 
+are chosen randomly. The user is able to provide a image.heic file and have the survey 
+code be automatically loaded in using OCR through pytesseract.
+
+Written by Camron Rule
+Summer/Fall 2023
+'''
+
 from splinter import Browser
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-import time
-import random
-import pickle
-import os.path
+from selenium.webdriver.common.keys import Keys #necessary to type user data at end
+from selenium.webdriver.support.ui import WebDriverWait #used to make sure that page is loaded before continuing (line 103)
+from selenium.webdriver.support import expected_conditions as EC #same here
+from selenium.webdriver.common.by import By #and here
+import time #used to wait before choosing next function - although this may not be needed TODO!!!
+import random #used to choose a random number of departments visited (line 102)
+import pickle #used to store and load user data
+import os.path #used to see if pickle file has been created (line 12)
 
 
 if not os.path.isfile('data.pkl'): #if user data has not been saved before
