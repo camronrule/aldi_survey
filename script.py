@@ -40,7 +40,7 @@ receipt_code = ["2685","480","002","005","016"]
 print('Please enter the date on the receipt in DD-MM-YYYY format, separated by hyphens')
 print('e.g., 06-20-2023')
 #receipt_date = input().split('-')
-receipt_date = ["09","01","23"]
+receipt_date = ["10","07","23"]
 
 #take in survey time
 print("Please enter the time the survey was printed, by typing 0, 1, 2, or 3")
@@ -63,6 +63,11 @@ driver = browser.driver
 
 #select language prompt
 browser.find_by_id('option_934913_404244').first.click() #english
+browser.find_by_id('nextPageLink').first.click() #next
+time.sleep(1.5)
+
+#select type of survey - receipt 1 (only numbers in survey code)
+browser.find_by_css('div.menuItem').first.click()
 browser.find_by_id('nextPageLink').first.click() #next
 
 #fill in code blanks
