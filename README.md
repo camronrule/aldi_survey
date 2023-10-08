@@ -1,6 +1,6 @@
 # aldi_survey
 
-A python script which fills out Aldi surveys that are printed on the bottom of receipts using Splinter.
+A python script which fills out Aldi surveys that are printed on the bottom of receipts using [Splinter](https://splinter.readthedocs.io/en/latest/).
 
 Functionality:
 - Storing user info in a pickle file for later surveys
