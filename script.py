@@ -19,6 +19,7 @@ import time #used to wait before choosing next function - although this may not 
 import random #used to choose a random number of departments visited (line 102)
 import pickle #used to store and load user data
 import os.path #used to see if pickle file has been created (line 12)
+import text #processes image.heic to get survey code
 
 
 if not os.path.isfile('data.pkl'): #if user data has not been saved before
@@ -42,28 +43,39 @@ if not os.path.isfile('data.pkl'): #if user data has not been saved before
         pickle.dump(user_info, f)
         f.close()
 
-#take in the survey code
 print("========================================")
-print('Please enter the code located on the bottom of the receipt')
-print('Enter the code separated by hyphens, with no other characters')
-print('e.g., 0123-456-789-012-345\n')
-#receipt_code = input().split('-')
-receipt_code = ["2685","480","002","005","016"]
+print("Would you like to provide a .heic image of your receipt?")
+print("If not, you will have to input the survey code manually.")
+print("Y / N")
 
-#take in survey date
-print('Please enter the date on the receipt in DD-MM-YYYY format, separated by hyphens')
-print('e.g., 06-20-2023\n')
-#receipt_date = input().split('-')
-receipt_date = ["10","07","23"]
+receipt_code = []
 
-#take in survey time
-print("Please enter the time the survey was printed, by typing 0, 1, 2, or 3")
-print("0: 8AM-12PM")
-print("1: 12PM-3PM")
-print("2: 3PM-5PM")
-print("3: 5PM-9PM")
-#receipt_time = input()
-receipt_time = "0"
+if (input().upper() == "Y"):
+    receipt_code = text.main().split('/')
+
+else:
+    #take in the survey code
+    print("========================================")
+    print('Please enter the code located on the bottom of the receipt')
+    print('Enter the code separated by /, with no other characters')
+    print('e.g., 0123/456/789/012/345\n')
+    #receipt_code = input().split('-')
+    receipt_code = ["2685","480","002","005","016"]
+
+    #take in survey date
+    print('Please enter the date on the receipt in DD-MM-YYYY format, separated by hyphens')
+    print('e.g., 06-20-2023\n')
+    #receipt_date = input().split('-')
+    receipt_date = ["10","07","23"]
+
+    #take in survey time
+    print("Please enter the time the survey was printed, by typing 0, 1, 2, or 3")
+    print("0: 8AM-12PM")
+    print("1: 12PM-3PM")
+    print("2: 3PM-5PM")
+    print("3: 5PM-9PM")
+    #receipt_time = input()
+    receipt_time = "0"
 
 #user info is stored already
 #change this if others are using the program
@@ -84,11 +96,8 @@ browser.find_by_css('div.menuItem').first.click()
 browser.find_by_id('nextPageLink').first.click() #next
 
 #fill in code blanks
-browser.find_by_id('promptInput_386097_0').fill(receipt_code[0])
-browser.find_by_id('promptInput_386097_1').fill(receipt_code[1])
-browser.find_by_id('promptInput_386097_2').fill(receipt_code[2])
-browser.find_by_id('promptInput_386097_3').fill(receipt_code[3])
-browser.find_by_id('promptInput_386097_4').fill(receipt_code[4])
+for i in range(0,5):
+    browser.find_by_id('promptInput_386097_'+str(i)).fill(receipt_code[i])
 
 #fill in date
 browser.find_by_id('promptInput_386007').fill(receipt_date)
@@ -288,7 +297,7 @@ browser.find_by_text("Yes").click()
 browser.find_by_id('nextPageLink').first.click() #next
 
 #page changes to aldi.us if survey was submitted
-if (browser.url is ('https://www.aldi.us')):
+if (browser.url == ('https://www.aldi.us')):
     print('Success! Thank you for using this program')
     print('  _________\n /         \\\n |  /\\ /\\  |\n |    -    |\n |  \\___/  |\n \\_________/'); #smiley face :)
 
