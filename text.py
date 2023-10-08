@@ -9,6 +9,10 @@ def main():
         
     pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
+    #TODO - possbility that image is already png or another usable type
+    
+    #TODO - instead of asking for file name, look for files of type .heic / .png / etc
+    #       and ask if that is the correct file, otherwise ask for the file to be placed in dir
     dir_path = os.path.dirname(os.path.realpath(__file__))
     print("\nPut the image of the receipt into this directory ("+dir_path+")")
     print("Please enter the name of the .heic image, without the extension:")

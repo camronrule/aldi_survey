@@ -35,6 +35,9 @@ def getCodeFromInput():
     receipt_code[0] = input()
 
 def main():
+
+    #TODO
+    #give user choice to not provide info
     if not os.path.isfile('data.pkl'): #if user data has not been saved before
         user_info = [None] * 8
         print("========================================")
